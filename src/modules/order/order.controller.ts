@@ -1,33 +1,46 @@
-import { Controller, Post, Body, Get } from '@nestjs/common';
+import { Body, Controller, Delete, Get, Param, Post, Put } from '@nestjs/common'
 import { ApiBody, ApiOperation, ApiTags } from '@nestjs/swagger'
-import { Connection, Repository, FindOneOptions } from 'typeorm'
-import { OrderService } from './order.service';
+import { CreateOrderDTO, UpdateOrderDTO } from './order.dto'
+import { OrderService } from './order.service'
 
 @ApiTags('Order Management')
 @Controller("order")
 export class OrderController {
-    constructor(private readonly orderService: OrderService){}
+    constructor(private readonly orderService: OrderService) {}
 
-    @Get()
+    @Get('')
     getOrderPage() {
       return 'Welcome to the order page!'; // 返回你想要的内容
     }
 
-    
+    @Get('/all')
+    @ApiOperation({description: 'get all orders' })
+    getOrders() {
+        return this.orderService.getAllOrders();
+    }
 
-    // @Post("createOrder")
-    // async createOrder(@Body() orderData: any){
-    //   try{
-    //     const order = await this.orderService.createOrder(orderData);
-    //     return {message: 'Order created succeessfully', order};
-    //   }catch(error){
-    //     return {message: 'Order cration failed',error: error.message}
-    //   }
-    // }
+    @Get(':id')
+    getOrderById(@Param('id') id: string) {
+        return this.orderService.getOrderById(id);
+    }
 
-    // @Get("orderHello")
-    // getOrderHello(): string {
-    //   return this.orderService.getHelloWorldMsg();
-    // }
+    @Post('/createOrder')
+    @ApiOperation({description: 'create order'})
+    async createTodo(@Body() createOrderDto: CreateOrderDTO) {
+        return this.orderService.createOrder(createOrderDto);
+    }
 
+    // update order by id 
+    @Put(':id')
+    @ApiOperation({description: 'update order by id'})
+    async updatePost(@Param('id') id: string, @Body() updateOrder: UpdateOrderDTO) {
+        return this.orderService.updateOrderById(id, updateOrder);
+    }
+
+    //delete order
+    @Delete(':id')
+    @ApiOperation({description: 'delete order by id'})
+    async deleteOrder(@Param('id') id: string) {
+        this.orderService.deleteOrder(id);
+    }
 }

@@ -34,3 +34,5 @@ export class Order {
   @Column()
   kafkaRawMessage?: string //从kafka获取的消费原始数据
 }
+
+export default Order;
