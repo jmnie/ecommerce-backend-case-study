@@ -5,6 +5,11 @@ import { AppService } from './app.service';
 export class AppController {
   constructor(
     private readonly appService: AppService) {}
+  
+  @Get()
+  getAppPage() {
+    return 'Welcome to the order page!'; 
+  }
 
   @Get("hello")
   getHello(): string {
