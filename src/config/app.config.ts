@@ -1,7 +1,12 @@
-// config/app.config.ts
+const appConfig = {
+  config:{
+    host: process.env.host || 'localhost',
+    port : process.env.port || 3000,
+  }
+}
 
-import { registerAs } from '@nestjs/config';
+export default appConfig
 
-export default registerAs('appConfig', () => ({
-  port: parseInt(process.env.PORT, 10) || 3000,
-}));
+export const getAppConfig = () =>{
+  return appConfig
+}

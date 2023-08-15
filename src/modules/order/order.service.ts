@@ -22,11 +22,11 @@ export class OrderService {
   }
 
   //create order 
-  async createOrder(Order: CreateOrderDTO){
+  async createOrder(Order: CreateOrderDTO): Promise<Order> {
     const newOrder = await this.orderRepository.create(Order);
-    await this.orderRepository.save(newOrder);
+    return this.orderRepository.save(newOrder);
   }
-
+  
   //update order
   async updateOrderById(id: string, post: UpdateOrderDTO){
     await this.orderRepository.update(id, post);
