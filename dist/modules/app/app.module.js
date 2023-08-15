@@ -12,12 +12,14 @@ const app_service_1 = require("./app.service");
 const app_controller_1 = require("./app.controller");
 const order_module_1 = require("../order/order.module");
 const typeorm_1 = require("@nestjs/typeorm");
-const path_1 = require("path");
+const inventory_module_1 = require("../inventory/inventory.module");
 const middleware_config_1 = require("../../config/middleware.config");
 const wechatAPI_module_1 = require("../wechatAPIToken/wechatAPI.module");
-const nestjs_redis_1 = require("@liaoliaots/nestjs-redis");
+const ioredis_1 = require("@nestjs-modules/ioredis");
+const redisClient_service_1 = require("../middleware/redisClient.service");
+const inventory_service_1 = require("../inventory/inventory.service");
+const order_service_1 = require("../order/order.service");
 const { database, redisCache, redisConfig } = (0, middleware_config_1.getMiddleConfig)();
-const entities = process.env.NODE_ENV === 'production' ? ['*.entity.js'] : [(0, path_1.join)(__dirname, '**', '*.entity.{ts,js}')];
 const TypeOrmModuleInstance = typeorm_1.TypeOrmModule.forRoot({
     type: 'mysql',
     host: database.host,
@@ -43,17 +45,18 @@ let AppModule = class AppModule {
 AppModule = __decorate([
     (0, common_1.Module)({
         controllers: [app_controller_1.AppController],
-        providers: [app_service_1.AppService],
+        providers: [app_service_1.AppService, inventory_service_1.InventoryService, order_service_1.OrderService, redisClient_service_1.RedisClientService],
         imports: [
             typeorm_1.TypeOrmModule,
-            TypeOrmModuleInstance,
             wechatAPI_module_1.WeChatAPIModule,
             order_module_1.OrderModule,
-            nestjs_redis_1.RedisModule.register({
-                host: redisConfig.host,
-                port: redisConfig.port,
-                name: redisConfig.name
+            ioredis_1.RedisModule.forRoot({
+                config: {
+                    host: redisConfig.host,
+                    port: redisConfig.port,
+                }
             }),
+            inventory_module_1.InventoryModule,
         ],
     })
 ], AppModule);

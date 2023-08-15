@@ -3,14 +3,16 @@ import {AppService} from './app.service';
 import {AppController} from './app.controller';
 import { OrderModule } from '../order/order.module';
 import { TypeOrmModule } from '@nestjs/typeorm'
-import { join } from 'path'
+// import { join } from 'path'
 import { InventoryModule } from '../inventory/inventory.module';
 import { getMiddleConfig } from 'src/config/middleware.config';
 import { WeChatAPIModule } from '../wechatAPIToken/wechatAPI.module';
-import { RedisModule } from '@liaoliaots/nestjs-redis'
+import { RedisModule } from '@nestjs-modules/ioredis';
+import { RedisClientService } from '../middleware/redisClient.service';
+import { InventoryService } from '../inventory/inventory.service';
+import { OrderService } from '../order/order.service';
 
 const {database, redisCache, redisConfig} = getMiddleConfig()
-const entities = process.env.NODE_ENV === 'production' ? ['*.entity.js'] : [join(__dirname, '**', '*.entity.{ts,js}')]
 
 const TypeOrmModuleInstance = TypeOrmModule.forRoot({
   type: 'mysql',
@@ -35,18 +37,19 @@ const TypeOrmModuleInstance = TypeOrmModule.forRoot({
 
 @Module({
   controllers: [AppController],
-  providers: [AppService],
+  providers: [AppService, InventoryService, OrderService, RedisClientService],
   imports:[
     TypeOrmModule,
-    TypeOrmModuleInstance,
+    //TypeOrmModuleInstance,
     WeChatAPIModule,
     OrderModule,
-    //InventoryModule,
-    RedisModule.register({
-      host:redisConfig.host,
-      port:redisConfig.port,
-      name:redisConfig.name
+    RedisModule.forRoot({
+      config:{
+        host: redisConfig.host,
+        port: redisConfig.port,
+      }
     }),
+    InventoryModule,
   ],
 })
 

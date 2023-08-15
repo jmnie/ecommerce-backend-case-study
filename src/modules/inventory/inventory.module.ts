@@ -1,6 +1,6 @@
 import { Logger, Module, OnApplicationBootstrap } from '@nestjs/common';
 import * as Redis from 'ioredis'
-import { InventoryController } from './inventory.controller';
+// import { InventoryController } from './inventory.controller';
 import { CreateOrderDTO } from '../order/order.dto'
 import { InventoryService } from './inventory.service';
 import { OrderModule } from '../order/order.module';
@@ -8,12 +8,14 @@ import { OrderService } from '../order/order.service';
 import { awaitWrap } from 'utils'
 import { getKafkaConsumer } from '../middleware/kafka-utils'
 import { RedisClientService } from '../middleware/redisClient.service';
+import { InventoryController } from './inventory.controller';
+// import { RedisClientModule } from '../middleware/redisClient.module';
+import * as IORedis from 'ioredis';
 
 @Module({
   imports: [OrderModule],
   controllers: [InventoryController],
-  providers: [InventoryService],
-  exports: [],
+  providers: [InventoryService, RedisClientService, IORedis.Redis],
 })
 export class InventoryModule implements OnApplicationBootstrap{
   logger = new Logger('Inventory Module')
