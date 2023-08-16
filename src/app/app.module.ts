@@ -1,15 +1,15 @@
 import { Module } from '@nestjs/common'
 import {AppService} from './app.service';
 import {AppController} from './app.controller';
-import { OrderModule } from '../order/order.module';
+import { OrderModule } from '../modules/order/order.module';
 import { TypeOrmModule } from '@nestjs/typeorm'
 // import { join } from 'path'
-import { InventoryModule } from '../inventory/inventory.module';
+import { InventoryModule } from '../modules/inventory/inventory.module';
 import { getMiddleConfig } from 'src/config/middleware.config';
-import { WeChatAPIModule } from '../wechatAPIToken/wechatAPI.module';
-import { RedisClientService } from '../middleware/redisClient.service';
-import { InventoryService } from '../inventory/inventory.service';
-import { OrderService } from '../order/order.service';
+import { WeChatAPIModule } from '../modules/wechatAPIToken/wechatAPI.module';
+import { RedisClientService } from '../modules/middleware/redisClient.service';
+import { InventoryService } from '../modules/inventory/inventory.service';
+import { OrderService } from '../modules/order/order.service';
 import { RedisModule } from '@nestjs-modules/ioredis';
 
 const {database, redisCache, redisConfig} = getMiddleConfig()
