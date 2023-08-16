@@ -16,6 +16,7 @@ const MiddlewareConfig = {
     inventoryCounter: 'secKillCounter', //库存计数器key
     inventoryHashKey: 'seckill-temp',
     inventoryTempLockKey: 'lock-seckill-update', //同步锁的键
+    url: 'redis://localhost:6379',
     name: 'inventoryRedis',
     host: 'localhost',
     port: 6379,

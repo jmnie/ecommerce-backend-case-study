@@ -7,10 +7,10 @@ import { TypeOrmModule } from '@nestjs/typeorm'
 import { InventoryModule } from '../inventory/inventory.module';
 import { getMiddleConfig } from 'src/config/middleware.config';
 import { WeChatAPIModule } from '../wechatAPIToken/wechatAPI.module';
-import { RedisModule } from '@nestjs-modules/ioredis';
 import { RedisClientService } from '../middleware/redisClient.service';
 import { InventoryService } from '../inventory/inventory.service';
 import { OrderService } from '../order/order.service';
+import { RedisModule } from '@nestjs-modules/ioredis';
 
 const {database, redisCache, redisConfig} = getMiddleConfig()
 
@@ -37,19 +37,18 @@ const TypeOrmModuleInstance = TypeOrmModule.forRoot({
 
 @Module({
   controllers: [AppController],
-  providers: [AppService, InventoryService, OrderService, RedisClientService],
+  providers: [AppService, RedisClientService],
   imports:[
-    TypeOrmModule,
+    //OrderModule,
+    //TypeOrmModule,
     //TypeOrmModuleInstance,
     WeChatAPIModule,
-    OrderModule,
-    RedisModule.forRoot({
-      config:{
-        host: redisConfig.host,
-        port: redisConfig.port,
-      }
-    }),
-    InventoryModule,
+    // RedisModule.forRoot({
+    //   config: { 
+    //     url: redisConfig.url,
+    //   },
+    // }),
+    //InventoryModule,
   ],
 })
 

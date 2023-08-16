@@ -10,15 +10,10 @@ exports.AppModule = void 0;
 const common_1 = require("@nestjs/common");
 const app_service_1 = require("./app.service");
 const app_controller_1 = require("./app.controller");
-const order_module_1 = require("../order/order.module");
 const typeorm_1 = require("@nestjs/typeorm");
-const inventory_module_1 = require("../inventory/inventory.module");
 const middleware_config_1 = require("../../config/middleware.config");
 const wechatAPI_module_1 = require("../wechatAPIToken/wechatAPI.module");
-const ioredis_1 = require("@nestjs-modules/ioredis");
 const redisClient_service_1 = require("../middleware/redisClient.service");
-const inventory_service_1 = require("../inventory/inventory.service");
-const order_service_1 = require("../order/order.service");
 const { database, redisCache, redisConfig } = (0, middleware_config_1.getMiddleConfig)();
 const TypeOrmModuleInstance = typeorm_1.TypeOrmModule.forRoot({
     type: 'mysql',
@@ -45,18 +40,9 @@ let AppModule = class AppModule {
 AppModule = __decorate([
     (0, common_1.Module)({
         controllers: [app_controller_1.AppController],
-        providers: [app_service_1.AppService, inventory_service_1.InventoryService, order_service_1.OrderService, redisClient_service_1.RedisClientService],
+        providers: [app_service_1.AppService, redisClient_service_1.RedisClientService],
         imports: [
-            typeorm_1.TypeOrmModule,
             wechatAPI_module_1.WeChatAPIModule,
-            order_module_1.OrderModule,
-            ioredis_1.RedisModule.forRoot({
-                config: {
-                    host: redisConfig.host,
-                    port: redisConfig.port,
-                }
-            }),
-            inventory_module_1.InventoryModule,
         ],
     })
 ], AppModule);

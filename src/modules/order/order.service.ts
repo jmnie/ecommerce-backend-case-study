@@ -46,10 +46,5 @@ export class OrderService {
       }
   }
 
-  // getHelloWorldMsg(): string{
-  //   return "Hello world from creating order";
-  // }
-
-  
 
 }
