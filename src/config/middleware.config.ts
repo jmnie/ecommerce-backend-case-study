@@ -4,7 +4,7 @@ const MiddlewareConfig = {
     host: 'localhost',
     port: 3306,
     username: 'root',
-    password: 'password',
+    password: 'temp_password',
     database: 'mysql',
   },
   redisCache: {
